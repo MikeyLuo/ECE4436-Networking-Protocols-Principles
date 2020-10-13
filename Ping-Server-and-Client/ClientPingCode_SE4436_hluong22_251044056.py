@@ -1,4 +1,4 @@
-import sys, time
+import datetime
 from socket import *
 
 #Sets the server host name, and the port number
@@ -10,24 +10,31 @@ timeout = 2
 clientsocket = socket(AF_INET, SOCK_DGRAM)
 #Sets the reply/wait time to 2 seconds 
 clientsocket.settimeout(timeout)
-
+#Change port into integer 
 port = int(port)
+#
+pingTime = 0
 
-ptime = 0
 
-while (ptime<10):
-    ptime +=1
 
-    data = "Ping " + str(ptime) + " " + time.asctime()
+#The following code will ping 10 times
+while (pingTime<10):
+    #Counter that counts up each time it has pinged
+    pingTime +=1
+    #Grabs the current date and time in YY/MM/DD H/M/S/MS format
+    currentTime = datetime.datetime.now()
+    #Creates the client message to be sent
+    data = "Ping " + str(pingTime) + " " + str(currentTime)
     try:
-        RTTb=time.time()
+       # RTTb=time.time()
         clientsocket.sendto(data.encode(),(host, port))
         message, address = clientsocket.recvfrom(1024)
-        RTTa = time.time()
-
+        #RTTa = time.time()
         print ("Reply from " + address[0] + ": " + message.decode())
-        print ("RTT: " + str(RTTa-RTTb))
+        print ("RTT: ")
+        #RTTinfo=(RTTa-RTTb)
 
+       # print ("RTT: "+ RTTinfo.microseconds)
     except:
         print ("Request timed out.")
         continue

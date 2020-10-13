@@ -16,6 +16,6 @@ while True:
     #Capitalizes the message received from client
     message = message.upper()
 
-    if rand>=3: #If this statement returns true, then the server will information back to the client
+    if rand<=3: #If this statement returns true, then the server will information back to the client
         continue
     serverSocket.sendto(message,address) #Send message to client
