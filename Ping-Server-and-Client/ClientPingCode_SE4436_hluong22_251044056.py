@@ -18,7 +18,7 @@ port=int(port)
 pingCounter=0
 #Creates an array called average
 average=[]
-packetLoss=[]
+okPackets=[]
 #The following code will ping 10 times
 for i in range (0,10,1):
     #Counter that counts up each time it has pinged
@@ -46,8 +46,8 @@ for i in range (0,10,1):
         #Appends any RTT value that is greater than 0 to an array
         if(RTT>0):
             average.append(RTT) 
-        if(RTT!=0|RTT>=0):
-            packetLoss.append(RTT)   
+        if (RTT>=0):
+            okPackets.append(RTT)   
     except:
         print ("Request timed out")
         continue
@@ -59,5 +59,8 @@ print("~ The Maximum RTT is: "+str(max(average))+" ms")
 print("~ The Average RTT is: "+str((sum(average))/(len(average)))+" ms")
 #Print's out the standard deviation RTT value
 print("~ The Standard Deviation RTT is: "+str(statistics.stdev(average,None))+" ms")
+#Print the packet loss rate as a percentage
+print("~ The packet loss rate is: "+str(((10-len(okPackets))/10)*100)+"%")
 #Closes the client socket
 clientsocket.close()
+
