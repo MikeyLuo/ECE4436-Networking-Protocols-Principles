@@ -1,5 +1,6 @@
 import datetime
 import time
+import statistics
 from socket import *
 
 #Sets the server host name, and the port number
@@ -15,7 +16,9 @@ clientsocket.settimeout(timeout)
 port=int(port)
 #Setting ping counter to zero
 pingCounter=0
+#Creates an array called average
 average=[]
+packetLoss=[]
 #The following code will ping 10 times
 for i in range (0,10,1):
     #Counter that counts up each time it has pinged
@@ -33,17 +36,28 @@ for i in range (0,10,1):
         message, address = clientsocket.recvfrom(1024)
         #Grabbing the current time of when packet has been received
         timeTwo=time.time()
-        """print ("Reply from " + address[0] + ": " +)""" 
+        #print ("Reply from " + address[0] + ": " +)
+        #Displays the server response 
         print(message.decode())
+        #Converts the RTT time to miliseconds
         RTT=(timeTwo-timeOne)*1000
+        #Displays the server respose
         print ("> RTT Client #"+str(pingCounter)+": "+str(RTT)+" ms")
+        #Appends any RTT value that is greater than 0 to an array
         if(RTT>0):
-            average.append(RTT)    
+            average.append(RTT) 
+        if(RTT!=0|RTT>=0):
+            packetLoss.append(RTT)   
     except:
         print ("Request timed out")
         continue
+#Print's out the minimum RTT value
 print("~ The Minimum RTT is: "+str(min(average))+" ms")
+#Print's out the maximum RTT value
 print("~ The Maximum RTT is: "+str(max(average))+" ms")
+#Print's out the average RTT value
 print("~ The Average RTT is: "+str((sum(average))/(len(average)))+" ms")
-#print("~ The Standard Deviation RTT is: "+str())
+#Print's out the standard deviation RTT value
+print("~ The Standard Deviation RTT is: "+str(statistics.stdev(average,None))+" ms")
+#Closes the client socket
 clientsocket.close()
