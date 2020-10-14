@@ -1,4 +1,5 @@
 import datetime
+import time
 from socket import *
 
 #Sets the server host name, and the port number
@@ -8,34 +9,41 @@ port = 1500
 timeout = 2
 #Creates an internet domain socket where the type is a datagram-based protocol
 clientsocket = socket(AF_INET, SOCK_DGRAM)
-#Sets the reply/wait time to 2 seconds 
+#Sets the reply/wait time of the client to 2 seconds 
 clientsocket.settimeout(timeout)
 #Change port into integer 
-port = int(port)
-#
-pingTime = 0
-
-
-
+port=int(port)
+#Setting ping counter to zero
+pingCounter=0
+average=[]
 #The following code will ping 10 times
-while (pingTime<10):
+for i in range (0,10,1):
     #Counter that counts up each time it has pinged
-    pingTime +=1
+    pingCounter+=1
     #Grabs the current date and time in YY/MM/DD H/M/S/MS format
-    currentTime = datetime.datetime.now()
+    currentTime=datetime.datetime.now()
     #Creates the client message to be sent
-    data = "Ping " + str(pingTime) + " " + str(currentTime)
+    sendData = "Ping from client #" + str(pingCounter) + " " + str(currentTime)
     try:
-       # RTTb=time.time()
-        clientsocket.sendto(data.encode(),(host, port))
+        #Grabbing the current time of when packet is sent
+        timeOne=time.time()
+        #Send the encoded UDP packet to the server with the ping message
+        clientsocket.sendto(sendData.encode(),(host, port))
+        #Grabs the response from the server
         message, address = clientsocket.recvfrom(1024)
-        #RTTa = time.time()
-        print ("Reply from " + address[0] + ": " + message.decode())
-        print ("RTT: ")
-        #RTTinfo=(RTTa-RTTb)
-
-       # print ("RTT: "+ RTTinfo.microseconds)
+        #Grabbing the current time of when packet has been received
+        timeTwo=time.time()
+        """print ("Reply from " + address[0] + ": " +)""" 
+        print(message.decode())
+        RTT=(timeTwo-timeOne)*1000
+        print ("> RTT Client #"+str(pingCounter)+": "+str(RTT)+" ms")
+        if(RTT>0):
+            average.append(RTT)    
     except:
-        print ("Request timed out.")
+        print ("Request timed out")
         continue
+print("~ The Minimum RTT is: "+str(min(average))+" ms")
+print("~ The Maximum RTT is: "+str(max(average))+" ms")
+print("~ The Average RTT is: "+str((sum(average))/(len(average)))+" ms")
+#print("~ The Standard Deviation RTT is: "+str())
 clientsocket.close()
