@@ -23,10 +23,10 @@ def clientCode():
     while True:
         try:
             data, address = sockServer.recvfrom(1024)
-            print  ('Client 1: Data Received from', (address))
+            print  ('Client 2: Data Received from', (address))
             print  ('and the Received Data is: ', data, '\n')
         except:
-            print ("Client 1 timed out")
+            print ("Client 2 timed out")
 
 if __name__=='__main__':
     clientCode()
