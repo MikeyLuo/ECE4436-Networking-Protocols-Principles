@@ -1,6 +1,7 @@
 import socket 
 import struct
 import sys
+import time
 
 
 def serverCode():
@@ -12,13 +13,12 @@ def serverCode():
     sockServer.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 255) # setting the data packet TTL for each message 
     # set timeout to 3 seconds so program knows how many responses to expect
     sockServer.settimeout(3)
-    
+
     # checks for any responses from all the clients
     while True:
         sockServer.sendto(b' Multicasting Assignmnet ECE 4436/9303 from server 1 ', multicast_group)
         print  ('Server 1: multicast packet is sent now')
-        print ('Server 1: multicast packet is sent now')
+        time.sleep(3)
     
-
 if __name__=='__main__':
     serverCode()

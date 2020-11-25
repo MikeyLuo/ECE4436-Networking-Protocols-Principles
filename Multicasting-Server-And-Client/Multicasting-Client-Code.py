@@ -18,7 +18,6 @@ def clientCode():
     mreq = struct.pack('=4sl',socket.inet_aton('224.1.1.1'),socket.INADDR_ANY)
     sockServer.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
      
-
     # check for recevied data and then respond
     while True:
         try:

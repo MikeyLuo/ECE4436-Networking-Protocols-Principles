@@ -1,6 +1,7 @@
 import socket 
 import struct
 import sys
+import time
 
 
 def serverCode():
@@ -14,21 +15,12 @@ def serverCode():
     sockServer.settimeout(3)
 
    
-    #try:
-        # checks for any responses from all the clients
+   
+    # checks for any responses from all the clients
     while True:
-        sockServer.sendto(b' Multicasting Assignmnet ECE 4436/9303 from server 1 ', multicast_group)
+        sockServer.sendto(b' Multicasting Assignmnet ECE 4436/9303 from server 2 ', multicast_group)
         print  ('Server 2: multicast packet is sent now')
-        #try: # if there is a response, receive the data
-        #data, server = sockServer.recvfrom(1024)
-            #except socket.timeout: # if there is no reponse within 3 seconds, close the socket
-                #print  ('timed out, no more responses')
-                #break
-            #else:
-        print ('Server 2: multicast packet is sent now')
-    #finally: # close the socket
-        #print ('closing socket')
-        #sockServer.close() # close the socket
+        time.sleep(3)
 
 if __name__=='__main__':
     serverCode()
